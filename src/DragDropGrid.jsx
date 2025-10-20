@@ -14,13 +14,17 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const ItemContent = memo(({ item }) => {
-  console.log("Render item", item.id);
-  return <span>{item.id}</span>;
-}, (prev, next) => prev.item.id === next.item.id);
+const ItemContent = memo(
+  ({ item }) => {
+    console.log("Render item", item.id);
+    return <span>{item.id}</span>;
+  },
+  (prev, next) => prev.item.id === next.item.id,
+);
 
 const SortableItem = ({ item }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: item.id });
 
   return (
     <div ref={setNodeRef} {...attributes} {...listeners}>
@@ -56,18 +60,23 @@ export default function DragDropGrid() {
     if (!over) return;
 
     setItems((prevItems) => {
-      const oldIndex = prevItems.findIndex(i => i.id === active.id);
+      const oldIndex = prevItems.findIndex((i) => i.id === active.id);
       if (oldIndex === -1) return prevItems;
 
       const updated = [...prevItems];
-      const moving = { ...updated[oldIndex], list: prevItems.find(i => i.id === over.id).list };
+      const moving = {
+        ...updated[oldIndex],
+        list: prevItems.find((i) => i.id === over.id).list,
+      };
 
       // remove do antigo
       updated.splice(oldIndex, 1);
 
       // adiciona ao final da lista de destino
-      const destinationList = updated.filter(i => i.list === moving.list);
-      const lastIndex = updated.lastIndexOf(destinationList[destinationList.length - 1]);
+      const destinationList = updated.filter((i) => i.list === moving.list);
+      const lastIndex = updated.lastIndexOf(
+        destinationList[destinationList.length - 1],
+      );
       updated.splice(lastIndex + 1, 0, moving);
 
       return updated;
@@ -76,6 +85,13 @@ export default function DragDropGrid() {
     setActiveId(null);
   };
 
+  const addItem = (list) => {
+    setItems((prev) => {
+      const maxId = Math.max(...prev.map((i) => i.id));
+      const newItem = { id: maxId + 1, list };
+      return [...prev, newItem];
+    });
+  };
 
   // Agrupa itens para exibição
   const grouped = items.reduce((acc, item) => {
@@ -85,37 +101,45 @@ export default function DragDropGrid() {
   }, {});
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-    >
-      <div style={{ display: "flex", gap: "16px" }}>
-        {Object.keys(grouped).map((listId) => (
-          <SortableContext
-            key={listId}
-            items={grouped[listId].map((item) => item.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <div
-              style={{
-                minWidth: "100px",
-                padding: "8px",
-                border: "1px solid #aaa",
-                borderRadius: "4px",
-              }}
+    <>
+      <button onClick={() => addItem("lista1")}>+ Item lista1</button>
+      <button onClick={() => addItem("lista2")}>+ Item lista2</button>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
+        <div style={{ display: "flex", gap: "16px" }}>
+          {Object.keys(grouped).map((listId) => (
+            <SortableContext
+              key={listId}
+              items={grouped[listId].map((item) => item.id)}
+              strategy={verticalListSortingStrategy}
             >
-              <h4>{listId}</h4>
-              {grouped[listId].map((item) => (
-                <SortableItem key={item.id} item={item} />
-              ))}
-            </div>
-          </SortableContext>
-        ))}
-      </div>
+              <div
+                style={{
+                  minWidth: "100px",
+                  padding: "8px",
+                  border: "1px solid #aaa",
+                  borderRadius: "4px",
+                }}
+              >
+                <h4>{listId}</h4>
+                {grouped[listId].map((item) => (
+                  <SortableItem key={item.id} item={item} />
+                ))}
+              </div>
+            </SortableContext>
+          ))}
+        </div>
 
-      <DragOverlay>{activeId && <SortableItem item={items.find(i => i.id === activeId)} />}</DragOverlay>
-    </DndContext>
+        <DragOverlay>
+          {activeId && (
+            <SortableItem item={items.find((i) => i.id === activeId)} />
+          )}
+        </DragOverlay>
+      </DndContext>
+    </>
   );
 }
