@@ -17,7 +17,7 @@ import { CSS } from "@dnd-kit/utilities";
 const ItemContent = memo(({ item }) => {
   console.log("Render item", item.id);
   return <span>{item.id}</span>;
-}, (prev, next) => prev.item.status === next.item.status);
+}, (prev, next) => prev.item.id === next.item.id);
 
 const SortableItem = ({ item }) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id });
