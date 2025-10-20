@@ -12,13 +12,12 @@ import {
   verticalListSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import {groupBy} from "./utils.js"
+import { groupBy } from "./utils.js";
 
 const ItemContent = memo(
   ({ item, renderItem }) => {
     console.log("Render item", item.id);
-    return renderItem(item)
+    return renderItem(item);
   },
   (prev, next) => prev.item.id === next.item.id,
 );
@@ -33,7 +32,12 @@ const SortableItem = ({ item, renderItem }) => {
   );
 };
 
-export default function DragDropGrid({items, groupByFn, updateItem, renderItem}) {
+export default function DragDropGrid({
+  items,
+  groupByFn,
+  updateItem,
+  renderItem,
+}) {
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -42,7 +46,7 @@ export default function DragDropGrid({items, groupByFn, updateItem, renderItem})
   const handleDragEnd = ({ active, over }) => {
     if (!over) return;
 
-    const targetList = items.find(i => i.id === over.id)?.list;
+    const targetList = items.find((i) => i.id === over.id)?.list;
     if (!targetList) return;
 
     updateItem(active.id, { list: targetList });
@@ -60,23 +64,20 @@ export default function DragDropGrid({items, groupByFn, updateItem, renderItem})
         onDragEnd={handleDragEnd}
       >
         <div style={{ display: "flex", gap: "16px" }}>
-          {Object.keys(grouped).map((listId) => (
+          {Object.keys(grouped).map((groupKey) => (
             <SortableContext
-              key={listId}
-              items={grouped[listId].map((item) => item.id)}
+              key={groupKey}
+              items={grouped[groupKey].map((item) => item.id)}
               strategy={verticalListSortingStrategy}
             >
-              <div
-                style={{
-                  minWidth: "100px",
-                  padding: "8px",
-                  border: "1px solid #aaa",
-                  borderRadius: "4px",
-                }}
-              >
-                <h4>{listId}</h4>
-                {grouped[listId].map((item) => (
-                  <SortableItem key={item.id} item={item} renderItem={renderItem} />
+              <div>
+                <h4>{groupKey}</h4>
+                {grouped[groupKey].map((item) => (
+                  <SortableItem
+                    key={item.id}
+                    item={item}
+                    renderItem={renderItem}
+                  />
                 ))}
               </div>
             </SortableContext>
@@ -85,7 +86,10 @@ export default function DragDropGrid({items, groupByFn, updateItem, renderItem})
 
         <DragOverlay>
           {activeId && (
-            <SortableItem item={items.find((i) => i.id === activeId)} renderItem={renderItem} />
+            <SortableItem
+              item={items.find((i) => i.id === activeId)}
+              renderItem={renderItem}
+            />
           )}
         </DragOverlay>
       </DndContext>

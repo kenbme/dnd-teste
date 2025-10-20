@@ -1,6 +1,4 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import DragDropGrid from "./DragDropGrid";
 import "./App.css";
 
@@ -22,12 +20,11 @@ function App() {
     { id: 14, list: "lista2" },
   ]);
 
-  const updateItem = (id, changes) =>
-    setItems(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, ...changes } : item
-      )
+  const updateItem = (id, changes) => {
+    setItems((items) =>
+      items.map((item) => (item.id === id ? { ...item, ...changes } : item)),
     );
+  };
 
   return (
     <>
@@ -35,7 +32,7 @@ function App() {
         items={items}
         updateItem={updateItem}
         renderItem={(item) => <div>{item.id}</div>}
-        groupByFn={item => item.list}
+        groupByFn={(item) => item.list}
       />
     </>
   );
