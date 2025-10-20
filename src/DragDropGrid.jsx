@@ -14,8 +14,6 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const itemCache = new Map();
-
 const ItemContent = memo(({ item }) => {
   console.log("Render item", item.id);
   return <span>{item.id}</span>;
