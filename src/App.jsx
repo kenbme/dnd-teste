@@ -8,7 +8,7 @@ function App() {
     if (page == null) return [];
     if (page > 3) return [];
 
-    const perPage = 10;
+    const perPage = 50;
     const listas = ["lista1", "lista2", "lista3", "lista4", "lista5"];
 
     const newItems = Array.from({ length: perPage }, () => ({
