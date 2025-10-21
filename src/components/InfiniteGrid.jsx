@@ -23,7 +23,7 @@ const DefaultLoading = () => (
       color: "#666",
     }}
   >
-    Carregando mais itens...
+    Loading...
   </div>
 );
 
@@ -36,7 +36,7 @@ const DefaultNotHasMore = () => (
       color: "#666",
     }}
   >
-    Não há mais itens para carregar
+    No more items to load
   </div>
 );
 

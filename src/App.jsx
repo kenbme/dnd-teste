@@ -15,7 +15,7 @@ function App() {
 
     const newItems = Array.from({ length: perPage }, () => ({
       id: Date.now().toString(36) + Math.random().toString(36).substring(2),
-      list: listas[Math.floor(Math.random() * listas.length)]
+      list: listas[Math.floor(Math.random() * listas.length)],
     }));
 
     return newItems;
