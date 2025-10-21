@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InfiniteDragDropGrid from "./components/InfiniteDragDropGrid";
+import InfiniteGrid from "./components/InfiniteGrid";
 import "./App.css";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
 
   return (
     <>
-      <InfiniteDragDropGrid
+      <InfiniteGrid
         groupByKey={"list"}
         fetchItems={fetchItems}
         renderItem={(item) => <div>{item.id}</div>}

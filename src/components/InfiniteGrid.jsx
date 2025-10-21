@@ -40,7 +40,16 @@ const DefaultNotHasMore = () => (
   </div>
 );
 
-export default function InfiniteDragDropGrid({
+const DefaultGrid = ({ items, groupByKey, updateItem, renderItem }) => (
+  <DragDropGrid
+    items={items}
+    groupByKey={groupByKey}
+    updateItem={updateItem}
+    renderItem={renderItem}
+  />
+);
+
+export default function InfiniteGrid({
   groupByKey,
   fetchItems,
   renderItem,
@@ -48,13 +57,14 @@ export default function InfiniteDragDropGrid({
   renderLoading = DefaultLoading,
   renderNotHasMore = DefaultNotHasMore,
   container: Container = DefaultContainer,
+  grid: Grid = DefaultGrid,
 }) {
   const { containerRef, items, setItems, loading, hasMore } =
     useInfiniteScroll(fetchItems);
 
   const content = (
     <>
-      <DragDropGrid
+      <Grid
         items={items}
         groupByKey={groupByKey}
         updateItem={(id, changes) =>
