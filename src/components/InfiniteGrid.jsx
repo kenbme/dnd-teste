@@ -40,8 +40,8 @@ const DefaultNotHasMore = () => (
   </div>
 );
 
-const DefaultGrid = ({ items, notifyUpdate }) => {
-  return <DragDropGrid items={items} notifyUpdate={notifyUpdate} />;
+const DefaultGrid = ({ items, requestUpdate }) => {
+  return <DragDropGrid items={items} requestUpdate={requestUpdate} />;
 };
 
 const defaultFetchItems = () => {
@@ -58,12 +58,12 @@ export default function InfiniteGrid({
   Loading = DefaultLoading,
   NotHasMore = DefaultNotHasMore,
 }) {
-  const { containerRef, items, setItems, loading, hasMore, notifyUpdate } =
+  const { containerRef, items, setItems, loading, hasMore, requestUpdate } =
     useInfiniteScroll(fetchItems, updateItem);
 
   return (
     <Container ref={containerRef}>
-      <Grid items={items} notifyUpdate={notifyUpdate} />
+      <Grid items={items} requestUpdate={requestUpdate} />
       <div id="scroll-sentinel" style={{ height: "1px" }} />
       {loading && <Loading />}
       {!hasMore && items.length > 0 && <NotHasMore />}

@@ -58,7 +58,7 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
     };
   }, [hasMore, loading, loadMoreItems]);
 
-  const notifyUpdate = async (id, changes) => {
+  const requestUpdate = async (id, changes) => {
     try {
       // chama a API primeiro
       if (updateItem) await updateItem(id, changes);
@@ -72,5 +72,5 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
     }
   };
 
-  return { containerRef, items, setItems, loading, hasMore, notifyUpdate };
+  return { containerRef, items, setItems, loading, hasMore, requestUpdate };
 }
