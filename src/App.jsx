@@ -1,38 +1,50 @@
 import { useState } from "react";
-import DragDropGrid from "./components/DragDropGrid";
+import InfiniteScrollGrid from "./components/InfiniteScrollGrid";
 import "./App.css";
 
 function App() {
-  const [items, setItems] = useState([
-    { id: 1, list: "lista1" },
-    { id: 2, list: "lista1" },
-    { id: 3, list: "lista1" },
-    { id: 7, list: "lista1" },
-    { id: 8, list: "lista1" },
-    { id: 9, list: "lista1" },
-    { id: 10, list: "lista1" },
-    { id: 4, list: "lista2" },
-    { id: 5, list: "lista2" },
-    { id: 6, list: "lista2" },
-    { id: 11, list: "lista2" },
-    { id: 12, list: "lista2" },
-    { id: 13, list: "lista2" },
-    { id: 14, list: "lista2" },
-  ]);
+  const fetchItems = (page) => {
+    if (page == null) return [];
+    if (page > 3) return [];
 
-  const updateItem = (id, changes) => {
-    setItems((items) =>
-      items.map((item) => (item.id === id ? { ...item, ...changes } : item)),
-    );
+    const perPage = 50;
+    const newItems = Array.from({ length: perPage }, () => ({
+      id: Date.now().toString(36) + Math.random().toString(36).substring(2),
+      list: Math.random() > 0.5 ? "lista1" : "lista2", // distribui aleatoriamente
+    }));
+    return newItems;
   };
 
   return (
     <>
-      <DragDropGrid
-        items={items}
-        updateItem={updateItem}
-        renderItem={(item) => <div>{item.id}</div>}
+      <InfiniteScrollGrid
         groupByKey={"list"}
+        fetchItems={fetchItems}
+        renderItem={(item) => <div>{item.id}</div>}
+        renderLoading={() => (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "20px",
+              background: "#f0f0f0",
+              color: "#666",
+            }}
+          >
+            Carregando mais itens...
+          </div>
+        )}
+        renderNotHasMore={() => (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "20px",
+              background: "#f0f0f0",
+              color: "#666",
+            }}
+          >
+            Não há mais itens para carregar
+          </div>
+        )}
       />
     </>
   );
