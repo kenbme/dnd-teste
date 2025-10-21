@@ -42,11 +42,24 @@ const SortableItem = ({ item, renderItem }) => {
   );
 };
 
+const DefaultGroupContainer = ({ groupKey, children }) => (
+  <div>
+    <h4>{groupKey}</h4>
+    {children}
+  </div>
+);
+
+const DefaultOuterContainer = ({ children }) => (
+  <div style={{ display: "flex", gap: "16px" }}>{children}</div>
+);
+
 export default function DragDropGrid({
   items,
   groupByKey,
   updateItem,
   renderItem,
+  groupContainer: GroupContainer = DefaultGroupContainer,
+  outerContainer: OuterContainer = DefaultOuterContainer,
 }) {
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(PointerSensor));
@@ -73,15 +86,14 @@ export default function DragDropGrid({
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div style={{ display: "flex", gap: "16px" }}>
+        <OuterContainer>
           {Object.keys(grouped).map((groupKey) => (
             <SortableContext
               key={groupKey}
               items={grouped[groupKey].map((item) => item.id)}
               strategy={verticalListSortingStrategy}
             >
-              <div>
-                <h4>{groupKey}</h4>
+              <GroupContainer groupKey={groupKey}>
                 {grouped[groupKey].map((item) => (
                   <SortableItem
                     key={item.id}
@@ -89,10 +101,10 @@ export default function DragDropGrid({
                     renderItem={renderItem}
                   />
                 ))}
-              </div>
+              </GroupContainer>
             </SortableContext>
           ))}
-        </div>
+        </OuterContainer>
 
         <DragOverlay>
           {activeId && (

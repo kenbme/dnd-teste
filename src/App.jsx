@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InfiniteScrollGrid from "./components/InfiniteScrollGrid";
+import InfiniteDragDropGrid from "./components/InfiniteDragDropGrid";
 import "./App.css";
 
 function App() {
@@ -18,34 +18,10 @@ function App() {
 
   return (
     <>
-      <InfiniteScrollGrid
+      <InfiniteDragDropGrid
         groupByKey={"list"}
         fetchItems={fetchItems}
         renderItem={(item) => <div>{item.id}</div>}
-        renderLoading={() => (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "20px",
-              background: "#f0f0f0",
-              color: "#666",
-            }}
-          >
-            Carregando mais itens...
-          </div>
-        )}
-        renderNotHasMore={() => (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "20px",
-              background: "#f0f0f0",
-              color: "#666",
-            }}
-          >
-            Não há mais itens para carregar
-          </div>
-        )}
       />
     </>
   );

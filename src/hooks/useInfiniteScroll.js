@@ -58,5 +58,5 @@ export default function useInfiniteScroll(fetchItems) {
     };
   }, [hasMore, loading, loadMoreItems]);
 
-  return { containerRef, items, loading, hasMore };
+  return { containerRef, items, setItems, loading, hasMore };
 }
