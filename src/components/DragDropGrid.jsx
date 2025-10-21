@@ -13,7 +13,6 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 
-// util
 function groupBy(array, keyFn) {
   return array.reduce((acc, item) => {
     const key = keyFn(item);

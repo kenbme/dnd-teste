@@ -31,13 +31,12 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
     loadMoreItems();
   }, []);
 
-  // Observador para detectar quando chegar no final
   useEffect(() => {
     if (!containerRef.current || !hasMore) return;
 
     const options = {
       root: containerRef.current,
-      rootMargin: "100px", // Dispara quando estiver a 100px do final
+      rootMargin: "100px",
       threshold: 0.1,
     };
 
@@ -66,10 +65,7 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
 
   const requestUpdate = async (id, changes) => {
     try {
-      // chama a API primeiro
       if (updateItem) await updateItem(id, changes);
-
-      // só atualiza o estado depois que a API retornar sucesso
       setItems((prev) =>
         prev.map((item) => (item.id === id ? { ...item, ...changes } : item)),
       );
