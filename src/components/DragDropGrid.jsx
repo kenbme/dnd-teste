@@ -53,11 +53,16 @@ const DefaultOuterContainer = ({ children }) => (
   <div style={{ display: "flex", gap: "16px" }}>{children}</div>
 );
 
+const defaultSortGroups = (keys) => {
+  return keys.sort((a, b) => a.localeCompare(b));
+};
+
 export default function DragDropGrid({
   items,
   groupByKey,
   updateItem,
   renderItem,
+  sortGroups = defaultSortGroups,
   groupContainer: GroupContainer = DefaultGroupContainer,
   outerContainer: OuterContainer = DefaultOuterContainer,
 }) {
@@ -78,6 +83,9 @@ export default function DragDropGrid({
 
   const grouped = groupBy(items, (item) => item[groupByKey]);
 
+  const orderedGroups = sortGroups(Object.keys(grouped))
+    .map((key) => ({ key, items: grouped[key] }));
+
   return (
     <>
       <DndContext
@@ -87,7 +95,7 @@ export default function DragDropGrid({
         onDragEnd={handleDragEnd}
       >
         <OuterContainer>
-          {Object.keys(grouped).map((groupKey) => (
+          {orderedGroups.map(({ key: groupKey, items: groupItems }) => (
             <SortableContext
               key={groupKey}
               items={grouped[groupKey].map((item) => item.id)}

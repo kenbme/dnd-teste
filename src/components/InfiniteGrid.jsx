@@ -54,6 +54,7 @@ export default function InfiniteGrid({
   fetchItems,
   renderItem,
   updateItem,
+  sortGroups,
   renderLoading = DefaultLoading,
   renderNotHasMore = DefaultNotHasMore,
   container: Container = DefaultContainer,
@@ -66,14 +67,23 @@ export default function InfiniteGrid({
     <>
       <Grid
         items={items}
+        sortGroups={sortGroups}
         groupByKey={groupByKey}
-        updateItem={(id, changes) =>
-          setItems((prev) =>
-            prev.map((item) =>
-              item.id === id ? { ...item, ...changes } : item,
-            ),
-          )
-        }
+        updateItem={async (id, changes) => {
+          try {
+            // chama a API primeiro
+            if (updateItem) await updateItem(id, changes);
+
+            // só atualiza o estado depois que a API retornar sucesso
+            setItems((prev) =>
+              prev.map((item) =>
+                item.id === id ? { ...item, ...changes } : item
+              )
+            );
+          } catch (err) {
+            console.error("Erro ao atualizar item:", err);
+          }
+        }}
         renderItem={renderItem}
       />
 
