@@ -70,23 +70,18 @@ export default function InfiniteGrid({
         sortGroups={sortGroups}
         groupByKey={groupByKey}
         updateItem={async (id, changes) => {
-          // salva o estado atual para poder reverter se der erro
-          const prevItems = [...items];
-
-          // atualização otimista
-          setItems((prev) =>
-            prev.map((item) =>
-              item.id === id ? { ...item, ...changes } : item
-            )
-          );
-
           try {
-            // chama a API
+            // chama a API primeiro
             if (updateItem) await updateItem(id, changes);
+
+            // só atualiza o estado depois que a API retornar sucesso
+            setItems((prev) =>
+              prev.map((item) =>
+                item.id === id ? { ...item, ...changes } : item,
+              ),
+            );
           } catch (err) {
             console.error("Erro ao atualizar item:", err);
-            // reverte para o estado anterior
-            setItems(prevItems);
           }
         }}
         renderItem={renderItem}
