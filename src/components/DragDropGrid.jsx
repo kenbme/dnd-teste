@@ -116,7 +116,7 @@ export default function DragDropGrid({
           ))}
         </OuterContainer>
 
-        <DragOverlay>
+        <DragOverlay dropAnimation={null}>
           {activeId && (
             <SortableItem
               item={items.find((i) => i.id === activeId)}
