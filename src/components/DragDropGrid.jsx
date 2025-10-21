@@ -13,14 +13,14 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 
-function groupBy(array, keyFn) {
+const groupBy = (array, keyFn) => {
   return array.reduce((acc, item) => {
     const key = keyFn(item);
     if (!acc[key]) acc[key] = [];
     acc[key].push(item);
     return acc;
   }, {});
-}
+};
 
 const ItemContent = memo(
   ({ item, renderItem }) => {

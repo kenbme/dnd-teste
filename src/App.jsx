@@ -4,7 +4,7 @@ import "./App.css";
 
 const API_DELAY = 200;
 
-function App() {
+export default function App() {
   const fetchItems = async (page) => {
     await new Promise((r) => setTimeout(r, API_DELAY));
     if (page == null) return [];
@@ -31,5 +31,3 @@ function App() {
     </>
   );
 }
-
-export default App;
