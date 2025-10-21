@@ -8,7 +8,7 @@ function App() {
   const fetchItems = async (page) => {
     await new Promise((r) => setTimeout(r, API_DELAY));
     if (page == null) return [];
-    if (page > 3) return [];
+    if (page > 8) return [];
 
     const perPage = 50;
     const listas = ["lista1", "lista2", "lista3", "lista4", "lista5"];
