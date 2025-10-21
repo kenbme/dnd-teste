@@ -32,7 +32,7 @@ function App() {
         items={items}
         updateItem={updateItem}
         renderItem={(item) => <div>{item.id}</div>}
-        groupByFn={(item) => item.list}
+        groupByKey={"list"}
       />
     </>
   );

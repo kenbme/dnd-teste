@@ -34,7 +34,7 @@ const SortableItem = ({ item, renderItem }) => {
 
 export default function DragDropGrid({
   items,
-  groupByFn,
+  groupByKey,
   updateItem,
   renderItem,
 }) {
@@ -46,14 +46,15 @@ export default function DragDropGrid({
   const handleDragEnd = ({ active, over }) => {
     if (!over) return;
 
-    const targetList = items.find((i) => i.id === over.id)?.list;
-    if (!targetList) return;
+    const targetItem = items.find((i) => i.id === over.id);
+    if (!targetItem) return;
 
-    updateItem(active.id, { list: targetList });
+    const targetGroup = targetItem[groupByKey];
+    updateItem(active.id, { [groupByKey]: targetGroup });
     setActiveId(null);
   };
 
-  const grouped = groupBy(items, groupByFn);
+  const grouped = groupBy(items, (item) => item[groupByKey]);
 
   return (
     <>
