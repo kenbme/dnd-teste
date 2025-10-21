@@ -25,9 +25,6 @@ function groupBy(array, keyFn) {
 
 const ItemContent = memo(
   ({ item, renderItem }) => {
-    if (import.meta.env.MODE === "development") {
-      console.log("Render item", item.id); // check rerender
-    }
     return renderItem(item);
   },
   (prev, next) => prev.item.id === next.item.id,

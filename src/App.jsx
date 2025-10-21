@@ -23,8 +23,6 @@ function App() {
 
   const updateItem = async (id, changes) => {
     await new Promise((r) => setTimeout(r, API_DELAY));
-    console.log("oi");
-    console.log(id, changes);
   };
 
   return (

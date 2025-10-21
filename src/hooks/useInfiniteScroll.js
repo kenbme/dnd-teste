@@ -20,8 +20,8 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
         setItems((prev) => [...prev, ...newItems]);
         setPage((prev) => prev + 1);
       }
-    } catch (error) {
-      console.error("Erro ao carregar itens:", error);
+    } catch (err) {
+      console.error("Error loading items:", err);
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,13 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
       }
     }, options);
 
-    const sentinel = document.getElementById("scroll-sentinel");
+    let sentinel = document.getElementById("scroll-sentinel");
+    if (!sentinel) {
+      sentinel = document.createElement("div");
+      sentinel.id = "scroll-sentinel";
+      sentinel.style.height = "1px";
+      containerRef.current.appendChild(sentinel);
+    }
     observer.observe(sentinel);
     observerRef.current = observer;
 
@@ -68,7 +74,7 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
         prev.map((item) => (item.id === id ? { ...item, ...changes } : item)),
       );
     } catch (err) {
-      console.error("Erro ao atualizar item:", err);
+      console.error("Error updating item:", err);
     }
   };
 

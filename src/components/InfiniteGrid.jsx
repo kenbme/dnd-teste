@@ -64,7 +64,6 @@ export default function InfiniteGrid({
   return (
     <Container ref={containerRef}>
       <Grid items={items} requestUpdate={requestUpdate} />
-      <div id="scroll-sentinel" style={{ height: "1px" }} />
       {loading && <Loading />}
       {!hasMore && items.length > 0 && <NotHasMore />}
     </Container>
