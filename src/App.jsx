@@ -2,9 +2,11 @@ import { useState } from "react";
 import InfiniteGrid from "./components/InfiniteGrid";
 import "./App.css";
 
+const API_DELAY = 200;
+
 function App() {
   const fetchItems = async (page) => {
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, API_DELAY));
     if (page == null) return [];
     if (page > 3) return [];
 
@@ -20,7 +22,7 @@ function App() {
   };
 
   const updateItem = async (id, changes) => {
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, API_DELAY));
     console.log("oi");
     console.log(id, changes);
   };
