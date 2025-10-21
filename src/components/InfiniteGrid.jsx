@@ -48,24 +48,25 @@ const defaultFetchItems = () => {
   return [];
 };
 
-const defaultUpdateItem = async () => {}
+const defaultUpdateItem = async () => {};
 
 export default function InfiniteGrid({
   fetchItems = defaultFetchItems,
   updateItem = defaultUpdateItem,
-  container: Container = DefaultContainer,
-  grid: Grid = DefaultGrid,
-  renderLoading = DefaultLoading,
-  renderNotHasMore = DefaultNotHasMore,
+  Container = DefaultContainer,
+  Grid = DefaultGrid,
+  Loading = DefaultLoading,
+  NotHasMore = DefaultNotHasMore,
 }) {
-  const { containerRef, items, setItems, loading, hasMore, notifyUpdate } = useInfiniteScroll(fetchItems, updateItem);
+  const { containerRef, items, setItems, loading, hasMore, notifyUpdate } =
+    useInfiniteScroll(fetchItems, updateItem);
 
   const content = (
     <>
       <Grid items={items} notifyUpdate={notifyUpdate} />
       <div id="scroll-sentinel" style={{ height: "1px" }} />
-      {loading && renderLoading()}
-      {!hasMore && items.length > 0 && renderNotHasMore()}
+      {loading && <Loading />}
+      {!hasMore && items.length > 0 && <NotHasMore />}
     </>
   );
 
