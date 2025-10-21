@@ -97,42 +97,40 @@ export default function DragDropGrid({
   }));
 
   return (
-    <>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <OuterContainer>
-          {orderedGroups.map((group) => (
-            <SortableContext
-              key={group.key}
-              items={group.items.map((item) => item.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              <GroupContainer groupKey={group.key}>
-                {group.items.map((item) => (
-                  <SortableItem
-                    key={item.id}
-                    item={item}
-                    renderItem={renderItem}
-                  />
-                ))}
-              </GroupContainer>
-            </SortableContext>
-          ))}
-        </OuterContainer>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <OuterContainer>
+        {orderedGroups.map((group) => (
+          <SortableContext
+            key={group.key}
+            items={group.items.map((item) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <GroupContainer groupKey={group.key}>
+              {group.items.map((item) => (
+                <SortableItem
+                  key={item.id}
+                  item={item}
+                  renderItem={renderItem}
+                />
+              ))}
+            </GroupContainer>
+          </SortableContext>
+        ))}
+      </OuterContainer>
 
-        <DragOverlay dropAnimation={null}>
-          {activeId && (
-            <SortableItem
-              item={items.find((i) => i.id === activeId)}
-              renderItem={renderItem}
-            />
-          )}
-        </DragOverlay>
-      </DndContext>
-    </>
+      <DragOverlay dropAnimation={null}>
+        {activeId && (
+          <SortableItem
+            item={items.find((i) => i.id === activeId)}
+            renderItem={renderItem}
+          />
+        )}
+      </DragOverlay>
+    </DndContext>
   );
 }

@@ -61,14 +61,12 @@ export default function InfiniteGrid({
   const { containerRef, items, setItems, loading, hasMore, notifyUpdate } =
     useInfiniteScroll(fetchItems, updateItem);
 
-  const content = (
-    <>
+  return (
+    <Container ref={containerRef}>
       <Grid items={items} notifyUpdate={notifyUpdate} />
       <div id="scroll-sentinel" style={{ height: "1px" }} />
       {loading && <Loading />}
       {!hasMore && items.length > 0 && <NotHasMore />}
-    </>
+    </Container>
   );
-
-  return <Container ref={containerRef}>{content}</Container>;
 }
