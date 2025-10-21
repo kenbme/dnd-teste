@@ -83,8 +83,10 @@ export default function DragDropGrid({
 
   const grouped = groupBy(items, (item) => item[groupByKey]);
 
-  const orderedGroups = sortGroups(Object.keys(grouped))
-    .map((key) => ({ key, items: grouped[key] }));
+  const orderedGroups = sortGroups(Object.keys(grouped)).map((key) => ({
+    key,
+    items: grouped[key],
+  }));
 
   return (
     <>

@@ -77,8 +77,8 @@ export default function InfiniteGrid({
             // só atualiza o estado depois que a API retornar sucesso
             setItems((prev) =>
               prev.map((item) =>
-                item.id === id ? { ...item, ...changes } : item
-              )
+                item.id === id ? { ...item, ...changes } : item,
+              ),
             );
           } catch (err) {
             console.error("Erro ao atualizar item:", err);

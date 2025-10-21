@@ -16,11 +16,11 @@ function App() {
     return newItems;
   };
 
-  const updateItem = async(id, changes) => {
+  const updateItem = async (id, changes) => {
     await new Promise((r) => setTimeout(r, 1000));
-    console.log('oi')
-    console.log(id, changes)
-  }
+    console.log("oi");
+    console.log(id, changes);
+  };
 
   return (
     <>
