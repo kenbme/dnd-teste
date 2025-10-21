@@ -12,11 +12,22 @@ import {
   verticalListSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
-import { groupBy } from "./utils.js";
+
+// util
+function groupBy(array, keyFn) {
+  return array.reduce((acc, item) => {
+    const key = keyFn(item);
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(item);
+    return acc;
+  }, {});
+}
 
 const ItemContent = memo(
   ({ item, renderItem }) => {
-    console.log("Render item", item.id);
+    if (import.meta.env.MODE === "development") {
+      console.log("Render item", item.id); // check rerender
+    }
     return renderItem(item);
   },
   (prev, next) => prev.item.id === next.item.id,
@@ -24,7 +35,6 @@ const ItemContent = memo(
 
 const SortableItem = ({ item, renderItem }) => {
   const { attributes, listeners, setNodeRef } = useSortable({ id: item.id });
-
   return (
     <div ref={setNodeRef} {...attributes} {...listeners}>
       <ItemContent item={item} renderItem={renderItem} />
@@ -40,7 +50,6 @@ export default function DragDropGrid({
 }) {
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(PointerSensor));
-
   const handleDragStart = (event) => setActiveId(event.active.id);
 
   const handleDragEnd = ({ active, over }) => {

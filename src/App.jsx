@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DragDropGrid from "./DragDropGrid";
+import DragDropGrid from "./components/DragDropGrid";
 import "./App.css";
 
 function App() {
