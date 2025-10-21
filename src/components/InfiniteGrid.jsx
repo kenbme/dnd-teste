@@ -1,7 +1,8 @@
+import { forwardRef } from "react";
 import DragDropGrid from "./DragDropGrid";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
-const DefaultContainer = React.forwardRef((props, ref) => (
+const DefaultContainer = forwardRef((props, ref) => (
   <div
     ref={ref}
     style={{
