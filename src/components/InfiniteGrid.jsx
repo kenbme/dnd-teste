@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React from "react";
 import DragDropGrid from "./DragDropGrid";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
@@ -40,41 +40,29 @@ const DefaultNotHasMore = () => (
   </div>
 );
 
-const DefaultGrid = ({ items, updateItem }) => {
-  return <DragDropGrid items={items} updateItem={updateItem} />;
+const DefaultGrid = ({ items, notifyUpdate }) => {
+  return <DragDropGrid items={items} notifyUpdate={notifyUpdate} />;
 };
 
 const defaultFetchItems = () => {
   return [];
 };
 
+const defaultUpdateItem = async () => {}
+
 export default function InfiniteGrid({
   fetchItems = defaultFetchItems,
+  updateItem = defaultUpdateItem,
   container: Container = DefaultContainer,
   grid: Grid = DefaultGrid,
   renderLoading = DefaultLoading,
   renderNotHasMore = DefaultNotHasMore,
 }) {
-  const { containerRef, items, setItems, loading, hasMore } =
-    useInfiniteScroll(fetchItems);
-
-  const updateItem = async (id, changes) => {
-    try {
-      // chama a API primeiro
-      if (updateItem) await updateItem(id, changes);
-
-      // só atualiza o estado depois que a API retornar sucesso
-      setItems((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, ...changes } : item)),
-      );
-    } catch (err) {
-      console.error("Erro ao atualizar item:", err);
-    }
-  };
+  const { containerRef, items, setItems, loading, hasMore, notifyUpdate } = useInfiniteScroll(fetchItems, updateItem);
 
   const content = (
     <>
-      <Grid items={items} updateItem={updateItem} />
+      <Grid items={items} notifyUpdate={notifyUpdate} />
       <div id="scroll-sentinel" style={{ height: "1px" }} />
       {loading && renderLoading()}
       {!hasMore && items.length > 0 && renderNotHasMore()}

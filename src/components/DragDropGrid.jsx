@@ -63,11 +63,11 @@ const defaultRenderItem = (item) => <div>{item.id}</div>;
 
 const defaultItems = [];
 
-const defaultUpdateItem = () => {};
+const defaultNotifyUpdate = () => {};
 
 export default function DragDropGrid({
   items = defaultItems,
-  updateItem = defaultUpdateItem,
+  notifyUpdate = defaultNotifyUpdate,
   groupByKey = defaultGroupByKey,
   renderItem = defaultRenderItem,
   sortGroups = defaultSortGroups,
@@ -85,7 +85,7 @@ export default function DragDropGrid({
     if (!targetItem) return;
 
     const targetGroup = targetItem[groupByKey];
-    updateItem(active.id, { [groupByKey]: targetGroup });
+    notifyUpdate(active.id, { [groupByKey]: targetGroup });
     setActiveId(null);
   };
 

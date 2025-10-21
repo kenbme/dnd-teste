@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export default function useInfiniteScroll(fetchItems) {
+export default function useInfiniteScroll(fetchItems, updateItem) {
   const containerRef = useRef(null);
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
@@ -8,7 +8,7 @@ export default function useInfiniteScroll(fetchItems) {
   const [loading, setLoading] = useState(false);
   const observerRef = useRef(null);
 
-  const loadMoreItems = useCallback(async () => {
+  const loadMoreItems = async () => {
     if (loading || !hasMore) return;
 
     setLoading(true);
@@ -25,7 +25,7 @@ export default function useInfiniteScroll(fetchItems) {
     } finally {
       setLoading(false);
     }
-  }, [page, loading, hasMore, fetchItems]);
+  };
 
   useEffect(() => {
     loadMoreItems();
@@ -58,5 +58,19 @@ export default function useInfiniteScroll(fetchItems) {
     };
   }, [hasMore, loading, loadMoreItems]);
 
-  return { containerRef, items, setItems, loading, hasMore };
+  const notifyUpdate = async (id, changes) => {
+    try {
+      // chama a API primeiro
+      if (updateItem) await updateItem(id, changes);
+
+      // só atualiza o estado depois que a API retornar sucesso
+      setItems((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, ...changes } : item)),
+      );
+    } catch (err) {
+      console.error("Erro ao atualizar item:", err);
+    }
+  };
+
+  return { containerRef, items, setItems, loading, hasMore, notifyUpdate };
 }
