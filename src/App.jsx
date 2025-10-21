@@ -3,7 +3,8 @@ import InfiniteScrollGrid from "./components/InfiniteScrollGrid";
 import "./App.css";
 
 function App() {
-  const fetchItems = (page) => {
+  const fetchItems = async (page) => {
+    await new Promise((r) => setTimeout(r, 1000));
     if (page == null) return [];
     if (page > 3) return [];
 

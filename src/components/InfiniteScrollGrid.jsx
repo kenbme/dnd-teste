@@ -20,8 +20,6 @@ export default function InfiniteScrollGrid({
 
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 1000));
-
       const newItems = await fetchItems(page);
       if (newItems.length === 0) {
         setHasMore(false);
