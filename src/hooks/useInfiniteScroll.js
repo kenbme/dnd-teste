@@ -62,7 +62,7 @@ export default function useInfiniteScroll(fetchItems, updateItem) {
         observerRef.current.disconnect();
       }
     };
-  }, [hasMore, loading, loadMoreItems]);
+  }, [hasMore, loading]);
 
   const requestUpdate = async (id, changes) => {
     try {
