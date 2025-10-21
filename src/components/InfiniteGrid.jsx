@@ -40,55 +40,42 @@ const DefaultNotHasMore = () => (
   </div>
 );
 
-const DefaultGrid = ({ items, groupByKey, updateItem, renderItem }) => (
-  <DragDropGrid
-    items={items}
-    groupByKey={groupByKey}
-    updateItem={updateItem}
-    renderItem={renderItem}
-  />
-);
+const DefaultGrid = ({ items, updateItem }) => {
+  return <DragDropGrid items={items} updateItem={updateItem} />;
+};
+
+const defaultFetchItems = () => {
+  return [];
+};
 
 export default function InfiniteGrid({
-  groupByKey,
-  fetchItems,
-  renderItem,
-  updateItem,
-  sortGroups,
-  renderLoading = DefaultLoading,
-  renderNotHasMore = DefaultNotHasMore,
+  fetchItems = defaultFetchItems,
   container: Container = DefaultContainer,
   grid: Grid = DefaultGrid,
+  renderLoading = DefaultLoading,
+  renderNotHasMore = DefaultNotHasMore,
 }) {
   const { containerRef, items, setItems, loading, hasMore } =
     useInfiniteScroll(fetchItems);
 
+  const updateItem = async (id, changes) => {
+    try {
+      // chama a API primeiro
+      if (updateItem) await updateItem(id, changes);
+
+      // só atualiza o estado depois que a API retornar sucesso
+      setItems((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, ...changes } : item)),
+      );
+    } catch (err) {
+      console.error("Erro ao atualizar item:", err);
+    }
+  };
+
   const content = (
     <>
-      <Grid
-        items={items}
-        sortGroups={sortGroups}
-        groupByKey={groupByKey}
-        updateItem={async (id, changes) => {
-          try {
-            // chama a API primeiro
-            if (updateItem) await updateItem(id, changes);
-
-            // só atualiza o estado depois que a API retornar sucesso
-            setItems((prev) =>
-              prev.map((item) =>
-                item.id === id ? { ...item, ...changes } : item,
-              ),
-            );
-          } catch (err) {
-            console.error("Erro ao atualizar item:", err);
-          }
-        }}
-        renderItem={renderItem}
-      />
-
+      <Grid items={items} updateItem={updateItem} />
       <div id="scroll-sentinel" style={{ height: "1px" }} />
-
       {loading && renderLoading()}
       {!hasMore && items.length > 0 && renderNotHasMore()}
     </>

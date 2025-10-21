@@ -29,12 +29,7 @@ function App() {
 
   return (
     <>
-      <InfiniteGrid
-        groupByKey={"list"}
-        fetchItems={fetchItems}
-        renderItem={(item) => <div>{item.id}</div>}
-        updateItem={updateItem}
-      />
+      <InfiniteGrid fetchItems={fetchItems} />
     </>
   );
 }

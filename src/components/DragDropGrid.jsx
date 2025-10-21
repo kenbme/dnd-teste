@@ -57,11 +57,19 @@ const defaultSortGroups = (keys) => {
   return keys.sort((a, b) => a.localeCompare(b));
 };
 
+const defaultGroupByKey = "list";
+
+const defaultRenderItem = (item) => <div>{item.id}</div>;
+
+const defaultItems = [];
+
+const defaultUpdateItem = () => {};
+
 export default function DragDropGrid({
-  items,
-  groupByKey,
-  updateItem,
-  renderItem,
+  items = defaultItems,
+  updateItem = defaultUpdateItem,
+  groupByKey = defaultGroupByKey,
+  renderItem = defaultRenderItem,
   sortGroups = defaultSortGroups,
   groupContainer: GroupContainer = DefaultGroupContainer,
   outerContainer: OuterContainer = DefaultOuterContainer,
