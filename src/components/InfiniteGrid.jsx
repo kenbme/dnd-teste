@@ -1,4 +1,3 @@
-import React from "react";
 import DragDropGrid from "./DragDropGrid";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
