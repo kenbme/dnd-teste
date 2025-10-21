@@ -8,11 +8,14 @@ function App() {
     if (page == null) return [];
     if (page > 3) return [];
 
-    const perPage = 1;
+    const perPage = 10;
+    const listas = ["lista1", "lista2", "lista3", "lista4", "lista5"];
+
     const newItems = Array.from({ length: perPage }, () => ({
       id: Date.now().toString(36) + Math.random().toString(36).substring(2),
-      list: Math.random() > 0.5 ? "lista1" : "lista2", // distribui aleatoriamente
+      list: listas[Math.floor(Math.random() * listas.length)], // distribui aleatoriamente entre 5 listas
     }));
+
     return newItems;
   };
 
